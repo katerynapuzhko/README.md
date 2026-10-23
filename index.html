@@ -51,17 +51,22 @@
             cursor: pointer;
         }
 
-        nav a {
-            margin-left: 1.5rem;
-            text-decoration: none;
+        nav button {
+            background: none;
+            border: none;
+            margin-left: 1rem;
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
-            transition: color 0.2s;
+            padding: 0.5rem 0.8rem;
+            border-radius: 0.4rem;
+            transition: all 0.2s;
         }
 
-        nav a:hover, nav a.active {
+        nav button:hover, nav button.active {
             color: var(--primary);
+            background: #EEF2FF;
         }
 
         main {
@@ -107,6 +112,7 @@
             border: none;
             border-radius: 0.5rem;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
             transition: transform 0.1s, background 0.2s;
         }
@@ -211,13 +217,13 @@
         }
 
         .option-btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.8rem 1.5rem;
             border: 2px solid var(--border);
             background: white;
             border-radius: 0.5rem;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.05rem;
             transition: all 0.2s;
             min-width: 130px;
         }
@@ -230,13 +236,13 @@
         .result-msg {
             margin-top: 1rem;
             font-weight: bold;
-            font-size: 1.1rem;
-            min-height: 1.5rem;
+            font-size: 1.2rem;
+            min-height: 1.8rem;
         }
 
         .progress-text {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 1rem;
             margin-bottom: 1rem;
             font-weight: 600;
         }
@@ -256,10 +262,10 @@
     <header>
         <div class="logo" onclick="switchView('home')">Kidora</div>
         <nav>
-            <a onclick="switchView('home')" id="nav-home" class="active">Domů</a>
-            <a onclick="switchView('catalog')" id="nav-catalog">Kurzy</a>
-            <a onclick="switchView('dashboard')" id="nav-dashboard">Můj pokrok</a>
-            <a onclick="switchView('admin')" id="nav-admin">Admin panel</a>
+            <button onclick="switchView('home')" id="nav-home" class="active">Domů</button>
+            <button onclick="switchView('catalog')" id="nav-catalog">Kurzy</button>
+            <button onclick="switchView('dashboard')" id="nav-dashboard">Můj pokrok</button>
+            <button onclick="switchView('admin')" id="nav-admin">Admin panel</button>
         </nav>
     </header>
 
@@ -268,29 +274,29 @@
         <div id="view-home" class="view active">
             <div class="hero">
                 <h1>Online příprava dětí na školu</h1>
-                <p>Zábavná interaktivní výuka pro předškoláky s kurzy a úkoly.</p>
-                <button class="btn" onclick="switchView('catalog')">Prohlédnout kurzy</button>
+                <p>Zábavná interaktivní výuka pro předškoláky s 5 kurzy a 100 úkoly.</p>
+                <button class="btn" onclick="switchView('catalog')">Prohlédnout katalog kurzů</button>
             </div>
             <h2 style="margin-bottom: 1.0rem;">O platformě Kidora</h2>
             <p style="color: var(--text-muted); line-height: 1.6;">
-                Vítejte v Kidora! Interaktivní vzdělávací portál pro předškoláky. Vyberte si kurz z katalogu a začněte procvičovat matematiku, abecedu, logiku, přírodu nebo angličtinu.
+                Vítejte na vzdělávacím portálu Kidora! Naše platforma pomáhá dětem připravit se na vstup do základní školy pomocí interaktivních úkolů z matematiky, abecedy, logiky, přírody a angličtiny.
             </p>
         </div>
 
         <!-- CATALOG VIEW -->
         <div id="view-catalog" class="view">
-            <h2 style="margin-bottom: 1.5rem;">Katalog kurzů</h2>
+            <h2 style="margin-bottom: 1.5rem;">Katalog nabízených kurzů</h2>
             <div class="grid" id="course-grid"></div>
         </div>
 
         <!-- LESSON / TASK VIEW -->
         <div id="view-lesson" class="view">
-            <button class="btn" style="margin-bottom: 1rem;" onclick="switchView('catalog')">← Zpět na katalog</button>
+            <button class="btn" style="margin-bottom: 1rem;" onclick="switchView('catalog')">← Zpět na katalog kurzů</button>
             <div class="task-box">
-                <div class="progress-text" id="task-progress">Úkol 1 z 1</div>
+                <div class="progress-text" id="task-progress">Úkol 1 z 20</div>
                 <h2 id="lesson-title" style="margin-bottom: 0.5rem;">Název kurzu</h2>
-                <img id="task-image" class="task-img" src="" alt="Ilustrace">
-                <p id="task-question" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;"></p>
+                <img id="task-image" class="task-img" src="" alt="Ilustrace k úkolu">
+                <p id="task-question" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;"></p>
                 
                 <div class="options" id="task-options"></div>
                 <div class="result-msg" id="result-msg"></div>
@@ -300,45 +306,45 @@
 
         <!-- DASHBOARD VIEW -->
         <div id="view-dashboard" class="view">
-            <h2 style="margin-bottom: 1.5rem;">Uživatelský panel & Pokrok</h2>
+            <h2 style="margin-bottom: 1.5rem;">Uživatelský panel & Přehled pokroku</h2>
             <div class="card" style="max-width: 450px; padding: 1.5rem;">
-                <h3>Uživatel: Student (Předškolák)</h3>
-                <p style="margin-top: 1rem; color: var(--text-muted);">Dostupné kurzy: <b id="dash-courses-count">0</b></p>
-                <p style="color: var(--text-muted);">Celkem úkolů v systému: <b id="dash-tasks-count">0</b></p>
-                <p style="color: var(--text-muted);">Vyřešeno úkolů v této relaci: <b id="completed-count" style="color: var(--accent);">0</b></p>
+                <h3>Profil: Předškolák</h3>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Aktivní kurzy v systému: <b id="dash-courses-count">0</b></p>
+                <p style="color: var(--text-muted);">Celkový počet úkolů k řešení: <b id="dash-tasks-count">0</b></p>
+                <p style="color: var(--text-muted);">Správně vyřešeno v této relaci: <b id="completed-count" style="color: var(--accent);">0</b></p>
             </div>
         </div>
 
         <!-- ADMIN VIEW -->
         <div id="view-admin" class="view">
-            <h2 style="margin-bottom: 1.5rem;">Administrace kurzů a otázek (CRUD)</h2>
+            <h2 style="margin-bottom: 1.5rem;">Správa obsahu a kurzů (Admin panel)</h2>
             
             <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
                 <!-- Add Course -->
                 <div class="card" style="flex: 1; min-width: 300px; padding: 1.5rem;">
-                    <h3 style="margin-bottom: 1rem;">1. Přidat nový kurz</h3>
-                    <input type="text" id="new-title" placeholder="Název kurzu">
-                    <textarea id="new-desc" placeholder="Popis kurzu" rows="2"></textarea>
-                    <input type="text" id="new-img" placeholder="URL obrázku kurzu (volitelné)">
-                    <button class="btn btn-primary" onclick="addCourse()">Uložit kurz</button>
+                    <h3 style="margin-bottom: 1rem;">1. Vytvořit nový kurz</h3>
+                    <input type="text" id="new-title" placeholder="Název nového kurzu">
+                    <textarea id="new-desc" placeholder="Krátký popis kurzu" rows="2"></textarea>
+                    <input type="text" id="new-img" placeholder="URL adresa obrázku kurzu (volitelné)">
+                    <button class="btn btn-primary" onclick="addCourse()">Uložit nový kurz</button>
                 </div>
 
                 <!-- Add Question -->
                 <div class="card" style="flex: 1; min-width: 300px; padding: 1.5rem;">
-                    <h3 style="margin-bottom: 1rem;">2. Přidat otázku do kurzu</h3>
+                    <h3 style="margin-bottom: 1rem;">2. Přidat úkol do kurzu</h3>
                     <select id="admin-course-select"></select>
-                    <input type="text" id="q-text" placeholder="Text otázky">
-                    <input type="text" id="q-img" placeholder="URL obrázku k otázce (volitelné)">
+                    <input type="text" id="q-text" placeholder="Znění otázky / úkolu">
+                    <input type="text" id="q-img" placeholder="URL obrázku k úkolu (volitelné)">
                     <input type="text" id="q-correct" placeholder="Správná odpověď">
                     <input type="text" id="q-wrong1" placeholder="Špatná odpověď 1">
                     <input type="text" id="q-wrong2" placeholder="Špatná odpověď 2">
-                    <button class="btn btn-primary" onclick="addQuestion()">Přidat otázku</button>
+                    <button class="btn btn-primary" onclick="addQuestion()">Přidat úkol do kurzu</button>
                 </div>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3>Seznam kurzů v systému</h3>
-                <button class="btn btn-danger" onclick="resetData()" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Obnovit výchozí data</button>
+                <h3>Seznam kurzů a jejich správa</h3>
+                <button class="btn btn-danger" onclick="resetData()" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Obnovit původní data</button>
             </div>
             <div class="grid" id="admin-course-grid"></div>
         </div>
@@ -349,7 +355,6 @@
     </footer>
 
     <script>
-        // Початкові дані (5 курсів по 20 питань)
         const defaultCourses = [
             {
                 id: 1,
@@ -442,7 +447,7 @@
                 img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&auto=format&fit=crop",
                 tasks: [
                     { q: "Které roční období přichází po zimě?", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500", correct: "Jaro", wrong: ["Léto", "Podzim"] },
-                    { q: "Kde žije ryba?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Ve vodě", wrong: ["Na stromě", "V poušti"] },
+                    { q: "Kde žije ryba?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Ve vodě", wrong: ["Na stromě", "V pouští"] },
                     { q: "Které zvíře dává mléko?", img: "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=500", correct: "Kráva", wrong: ["Slepice", "Pes"] },
                     { q: "Co potřebují rostliny k růstu?", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500", correct: "Vodu a světlo", wrong: ["Čokoládu", "Hračky"] },
                     { q: "Který orgán používáme k poslechu hudby?", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", correct: "Uši", wrong: ["Oči", "Nos"] },
@@ -493,7 +498,6 @@
             }
         ];
 
-        // Завантаження даних з localStorage або використання дефолтних
         let courses = JSON.parse(localStorage.getItem('kidora_courses')) || defaultCourses;
 
         function saveCourses() {
@@ -508,7 +512,7 @@
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active');
 
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             const navEl = document.getElementById('nav-' + viewId);
             if (navEl) navEl.classList.add('active');
 
@@ -545,10 +549,6 @@
             loadTask();
         }
 
-        function shuffle(array) {
-            return array.sort(() => Math.random() - 0.5);
-        }
-
         function loadTask() {
             const task = activeCourse.tasks[activeTaskIndex];
             document.getElementById('task-progress').innerText = `Úkol ${activeTaskIndex + 1} z ${activeCourse.tasks.length}`;
@@ -558,8 +558,8 @@
             document.getElementById('result-msg').innerText = '';
             document.getElementById('next-btn').style.display = 'none';
 
-            // Формуємо масив варіантів та перемішуємо їх
-            const options = shuffle([task.correct, ...task.wrong]);
+            // Mix options
+            const options = [task.correct, ...task.wrong].sort(() => Math.random() - 0.5);
 
             const optsBox = document.getElementById('task-options');
             optsBox.innerHTML = '';
@@ -567,7 +567,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = () => checkAnswer(opt, task.correct);
+                btn.onclick = function() { checkAnswer(opt, task.correct); };
                 optsBox.appendChild(btn);
             });
         }
@@ -694,7 +694,7 @@
         }
 
         function resetData() {
-            if (confirm('Obnovit výchozí kurzy a otázky? Všechny vaše úpravy se vymažou.')) {
+            if (confirm('Obnovit původní kurzy a otázky? Všechny vaše úpravy se vymažou.')) {
                 localStorage.removeItem('kidora_courses');
                 courses = JSON.parse(JSON.stringify(defaultCourses));
                 renderAdmin();
