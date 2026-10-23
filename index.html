@@ -13,6 +13,7 @@
             --text-main: #1E293B;
             --text-muted: #64748B;
             --accent: #10B981;
+            --danger: #EF4444;
             --border: #E2E8F0;
         }
 
@@ -79,7 +80,6 @@
             display: block;
         }
 
-        /* Hero section */
         .hero {
             background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
             color: white;
@@ -125,7 +125,11 @@
             background: var(--primary-hover);
         }
 
-        /* Catalog Grid */
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -145,8 +149,9 @@
 
         .card-img {
             width: 100%;
-            height: 160px;
+            height: 180px;
             object-fit: cover;
+            background-color: #E2E8F0;
         }
 
         .card-body {
@@ -168,7 +173,6 @@
             flex: 1;
         }
 
-        /* Forms & Inputs */
         input, textarea, select {
             width: 100%;
             padding: 0.75rem;
@@ -176,9 +180,9 @@
             border: 1px solid var(--border);
             border-radius: 0.5rem;
             outline: none;
+            font-size: 1rem;
         }
 
-        /* Interactive Task */
         .task-box {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -191,10 +195,11 @@
 
         .task-img {
             width: 100%;
-            max-height: 250px;
+            max-height: 260px;
             object-fit: cover;
             border-radius: 0.5rem;
             margin-bottom: 1.25rem;
+            background-color: #E2E8F0;
         }
 
         .options {
@@ -214,6 +219,7 @@
             font-weight: bold;
             font-size: 1rem;
             transition: all 0.2s;
+            min-width: 130px;
         }
 
         .option-btn:hover {
@@ -225,16 +231,16 @@
             margin-top: 1rem;
             font-weight: bold;
             font-size: 1.1rem;
+            min-height: 1.5rem;
         }
 
         .progress-text {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 1rem;
             font-weight: 600;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -262,35 +268,31 @@
         <div id="view-home" class="view active">
             <div class="hero">
                 <h1>Online příprava dětí na školu</h1>
-                <p>Zábavná interaktivní výuka pro předškoláky s ilustracemi a úkoly.</p>
+                <p>Zábavná interaktivní výuka pro předškoláky s kurzy a úkoly.</p>
                 <button class="btn" onclick="switchView('catalog')">Prohlédnout kurzy</button>
             </div>
-            <h2 style="margin-bottom: 1rem;">O platformě</h2>
+            <h2 style="margin-bottom: 1.0rem;">O platformě Kidora</h2>
             <p style="color: var(--text-muted); line-height: 1.6;">
-                Kidora nabízí 5 kompletních kurzů s 50 interaktivními úkoly pro předškolní vzdělávání. Každý kurz rozvíjí klíčové dovednosti dítěte: matematiku, čtení, logiku, poznávání přírody a základy angličtiny.
+                Vítejte v Kidora! Interaktivní vzdělávací portál pro předškoláky. Vyberte si kurz z katalogu a začněte procvičovat matematiku, abecedu, logiku, přírodu nebo angličtinu.
             </p>
         </div>
 
         <!-- CATALOG VIEW -->
         <div id="view-catalog" class="view">
-            <h2 style="margin-bottom: 1.5rem;">Katalog kurzů (5 kurzů)</h2>
-            <div class="grid" id="course-grid">
-                <!-- Dynamically filled -->
-            </div>
+            <h2 style="margin-bottom: 1.5rem;">Katalog kurzů</h2>
+            <div class="grid" id="course-grid"></div>
         </div>
 
         <!-- LESSON / TASK VIEW -->
         <div id="view-lesson" class="view">
-            <button class="btn" style="margin-bottom: 1rem;" onclick="switchView('catalog')">← Zpět na kurzy</button>
+            <button class="btn" style="margin-bottom: 1rem;" onclick="switchView('catalog')">← Zpět na katalog</button>
             <div class="task-box">
-                <div class="progress-text" id="task-progress">Úkol 1 z 10</div>
+                <div class="progress-text" id="task-progress">Úkol 1 z 1</div>
                 <h2 id="lesson-title" style="margin-bottom: 0.5rem;">Název kurzu</h2>
-                <img id="task-image" class="task-img" src="" alt="Ilustrace k úkolu">
+                <img id="task-image" class="task-img" src="" alt="Ilustrace">
                 <p id="task-question" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;"></p>
                 
-                <div class="options" id="task-options">
-                    <!-- Dynamic options -->
-                </div>
+                <div class="options" id="task-options"></div>
                 <div class="result-msg" id="result-msg"></div>
                 <button class="btn btn-primary" id="next-btn" style="display:none; margin: 1.5rem auto 0 auto;" onclick="nextTask()">Další úkol →</button>
             </div>
@@ -301,26 +303,44 @@
             <h2 style="margin-bottom: 1.5rem;">Uživatelský panel & Pokrok</h2>
             <div class="card" style="max-width: 450px; padding: 1.5rem;">
                 <h3>Uživatel: Student (Předškolák)</h3>
-                <p style="margin-top: 1rem; color: var(--text-muted);">Dostupné kurzy: <b>5</b></p>
-                <p style="color: var(--text-muted);">Celkem úkolů k vyřešení: <b>50</b></p>
-                <p style="color: var(--text-muted);">Splněno úkolů v relaci: <b id="completed-count" style="color: var(--accent);">0</b></p>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Dostupné kurzy: <b id="dash-courses-count">0</b></p>
+                <p style="color: var(--text-muted);">Celkem úkolů v systému: <b id="dash-tasks-count">0</b></p>
+                <p style="color: var(--text-muted);">Vyřešeno úkolů v této relaci: <b id="completed-count" style="color: var(--accent);">0</b></p>
             </div>
         </div>
 
         <!-- ADMIN VIEW -->
         <div id="view-admin" class="view">
-            <h2 style="margin-bottom: 1.5rem;">Administrace kurzů (CRUD)</h2>
-            <div class="card" style="max-width: 600px; margin-bottom: 2rem; padding: 1.5rem;">
-                <h3 style="margin-bottom: 1rem;">Přidat nový kurz</h3>
-                <input type="text" id="new-title" placeholder="Název kurzu">
-                <textarea id="new-desc" placeholder="Popis kurzu" rows="3"></textarea>
-                <input type="text" id="new-img" placeholder="URL obrázku (volitelné)">
-                <button class="btn btn-primary" onclick="addCourse()">Uložit kurz</button>
+            <h2 style="margin-bottom: 1.5rem;">Administrace kurzů a otázek (CRUD)</h2>
+            
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                <!-- Add Course -->
+                <div class="card" style="flex: 1; min-width: 300px; padding: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem;">1. Přidat nový kurz</h3>
+                    <input type="text" id="new-title" placeholder="Název kurzu">
+                    <textarea id="new-desc" placeholder="Popis kurzu" rows="2"></textarea>
+                    <input type="text" id="new-img" placeholder="URL obrázku kurzu (volitelné)">
+                    <button class="btn btn-primary" onclick="addCourse()">Uložit kurz</button>
+                </div>
+
+                <!-- Add Question -->
+                <div class="card" style="flex: 1; min-width: 300px; padding: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem;">2. Přidat otázku do kurzu</h3>
+                    <select id="admin-course-select"></select>
+                    <input type="text" id="q-text" placeholder="Text otázky">
+                    <input type="text" id="q-img" placeholder="URL obrázku k otázce (volitelné)">
+                    <input type="text" id="q-correct" placeholder="Správná odpověď">
+                    <input type="text" id="q-wrong1" placeholder="Špatná odpověď 1">
+                    <input type="text" id="q-wrong2" placeholder="Špatná odpověď 2">
+                    <button class="btn btn-primary" onclick="addQuestion()">Přidat otázku</button>
+                </div>
             </div>
-            <h3>Seznam kurzů v systému</h3>
-            <div class="grid" id="admin-course-grid" style="margin-top: 1rem;">
-                <!-- Admin dynamic list -->
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3>Seznam kurzů v systému</h3>
+                <button class="btn btn-danger" onclick="resetData()" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Obnovit výchozí data</button>
             </div>
+            <div class="grid" id="admin-course-grid"></div>
         </div>
     </main>
 
@@ -329,98 +349,156 @@
     </footer>
 
     <script>
-        const courses = [
+        // Початкові дані (5 курсів по 20 питань)
+        const defaultCourses = [
             {
                 id: 1,
                 title: "1. Základy matematiky",
-                desc: "Naučte se čísla, počítání předmětů a jednoduché součty do 10.",
-                img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500&auto=format&fit=crop",
+                desc: "Procvičování čísel, sčítání, odčítání a porovnávání pro nejmenší.",
+                img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&auto=format&fit=crop",
                 tasks: [
-                    { q: "Kolik je 2 + 3?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", options: ["4", "5", "6"], correct: "5" },
-                    { q: "Kolik jablek je na obrázku, když máme 1 a přidáme 1?", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500", options: ["2", "3", "1"], correct: "2" },
-                    { q: "Které číslo je větší: 7 nebo 4?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", options: ["4", "7", "Jsou stejná"], correct: "7" },
-                    { q: "Kolik je 5 - 2?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", options: ["2", "3", "4"], correct: "3" },
-                    { q: "Kolik prstů má člověk na jedné ruce?", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=500", options: ["4", "5", "10"], correct: "5" },
-                    { q: "Kolik je 4 + 4?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", options: ["6", "7", "8"], correct: "8" },
-                    { q: "Jaké číslo následuje po číslu 8?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", options: ["7", "9", "10"], correct: "9" },
-                    { q: "Kolik rohů má čtverec?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", options: ["3", "4", "5"], correct: "4" },
-                    { q: "Kolik je 10 - 5?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", options: ["5", "4", "6"], correct: "5" },
-                    { q: "Kolik je 0 + 6?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", options: ["0", "6", "10"], correct: "6" }
+                    { q: "Kolik je 2 + 3?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "5", wrong: ["4", "6"] },
+                    { q: "Máš 1 jablko a dostaneš ještě 1. Kolik jich máš celkem?", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500", correct: "2", wrong: ["3", "1"] },
+                    { q: "Které číslo je větší: 7 nebo 4?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "7", wrong: ["4", "Stejná"] },
+                    { q: "Kolik je 5 - 2?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "3", wrong: ["2", "4"] },
+                    { q: "Kolik prstů má člověk na jedné ruce?", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=500", correct: "5", wrong: ["4", "10"] },
+                    { q: "Kolik je 4 + 4?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "8", wrong: ["6", "7"] },
+                    { q: "Jaké číslo následuje hned po číslu 8?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "9", wrong: ["7", "10"] },
+                    { q: "Kolik rohů má čtverec?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "4", wrong: ["3", "5"] },
+                    { q: "Kolik je 10 - 5?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "5", wrong: ["4", "6"] },
+                    { q: "Kolik je 0 + 6?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "6", wrong: ["0", "10"] },
+                    { q: "Které číslo je menší: 2 nebo 9?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "2", wrong: ["9", "Stejná"] },
+                    { q: "Kolik je 3 + 3?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "6", wrong: ["5", "7"] },
+                    { q: "Máš 4 kuličky a 1 ztratíš. Kolik ti zůstane?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "3", wrong: ["2", "4"] },
+                    { q: "Kolik je 1 + 8?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "9", wrong: ["8", "10"] },
+                    { q: "Kolik je 7 - 3?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "4", wrong: ["3", "5"] },
+                    { q: "Doplň číslo do řady: 1, 2, 3, __, 5", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "4", wrong: ["6", "0"] },
+                    { q: "Kolik je 5 + 5?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "10", wrong: ["9", "11"] },
+                    { q: "Kolik je 8 - 4?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "4", wrong: ["2", "6"] },
+                    { q: "Když sníš 2 sušenky ze 2, kolik ti zůstane?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "0", wrong: ["1", "2"] },
+                    { q: "Kolik je 9 - 1?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "8", wrong: ["7", "9"] }
                 ]
             },
             {
                 id: 2,
                 title: "2. Čtení a Hravá Abeceda",
-                desc: "Poznávejte první písmenka, slabiky a jednoduchá slova.",
-                img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&auto=format&fit=crop",
+                desc: "Poznávejte písmenka, slabiky a skládání slov.",
+                img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=600&auto=format&fit=crop",
                 tasks: [
-                    { q: "Jakým písmenem začíná slovo 'Auto'?", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500", options: ["A", "B", "M"], correct: "A" },
-                    { q: "Jaké slovo vznikne složením slabik MA + MA?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", options: ["MÁMA", "TÁTA", "AUTO"], correct: "MÁMA" },
-                    { q: "Které slovo začíná na písmeno 'P'?", img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500", options: ["Kočka", "Pes", "Les"], correct: "Pes" },
-                    { q: "Kolik slabik má slovo 'Ko-ti-át-ko'?", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500", options: ["2", "3", "4"], correct: "4" },
-                    { q: "Jaké písmeno leží mezi A a C?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", options: ["B", "D", "K"], correct: "B" },
-                    { q: "Jakým písmenem končí slovo 'Lest'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", options: ["L", "E", "T"], correct: "T" },
-                    { q: "Které z těchto slov je nejkratší?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", options: ["Pes", "Krokodýl", "Vrabec"], correct: "Pes" },
-                    { q: "Jaké slovo RÝMUJE se slovem 'Les'?", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500", options: ["Pes", "Voda", "Strom"], correct: "Pes" },
-                    { q: "Jakým písmenem začíná slovo 'Slunce'?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", options: ["S", "O", "L"], correct: "S" },
-                    { q: "Co tvoří větu?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", options: ["Slova", "Čísla", "Barvy"], correct: "Slova" }
+                    { q: "Jakým písmenem začíná slovo 'Auto'?", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500", correct: "A", wrong: ["B", "M"] },
+                    { q: "Jaké slovo vznikne složením slabik MA + MA?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "MÁMA", wrong: ["TÁTA", "AUTO"] },
+                    { q: "Které slovo začíná na písmeno 'P'?", img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500", correct: "Pes", wrong: ["Kočka", "Les"] },
+                    { q: "Kolik slabik má slovo 'Ko-ti-át-ko'?", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500", correct: "4", wrong: ["2", "3"] },
+                    { q: "Jaké písmeno leží v abecedě mezi A a C?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "B", wrong: ["D", "K"] },
+                    { q: "Jakým písmenem končí slovo 'Les'?", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500", correct: "S", wrong: ["L", "E"] },
+                    { q: "Které z těchto slov je nejkratší?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "Pes", wrong: ["Krokodýl", "Vrabec"] },
+                    { q: "Jaké slovo se RÝMUJE se slovem 'Les'?", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500", correct: "Pes", wrong: ["Voda", "Strom"] },
+                    { q: "Jakým písmenem začíná slovo 'Slunce'?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", correct: "S", wrong: ["O", "L"] },
+                    { q: "Co tvoří větu?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "Slova", wrong: ["Čísla", "Barvy"] },
+                    { q: "Jakým písmenem začíná slovo 'Buben'?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "B", wrong: ["A", "C"] },
+                    { q: "Slovo TÁ-TA má kolik slabik?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "2", wrong: ["1", "3"] },
+                    { q: "Které slovo začíná na samohlásku 'O'?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "Oko", wrong: ["Dom", "Pec"] },
+                    { q: "Jaké písmeno vypadlo ze slova 'K_ČKA'?", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500", correct: "O", wrong: ["A", "E"] },
+                    { q: "Co čteme v knížce?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "Příběhy a pohádky", wrong: ["Písničky", "Filmy"] },
+                    { q: "Jakým písmenem začíná slovo 'Jablko'?", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500", correct: "J", wrong: ["A", "B"] },
+                    { q: "Které slovo je napsáno správně Velkými písmeny?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "DOMOV", wrong: ["Domov", "doMOV"] },
+                    { q: "Jaké písmeno následuje po 'M' ve slově MÁMA?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "Á", wrong: ["M", "O"] },
+                    { q: "Co děláme, když čteme?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "Prohlížíme slova", wrong: ["Kreslíme", "Zpíváme"] },
+                    { q: "Jakým písmenem začíná slovo 'Hrad'?", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500", correct: "H", wrong: ["K", "R"] }
                 ]
             },
             {
                 id: 3,
-                title: "3. Logika a Geometrie",
-                desc: "Trénujte pozornost, barvy, tvary a logické posloupnosti.",
-                img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop",
+                title: "3. Logika a Geometrické Tvary",
+                desc: "Rozvoj logického myšlení, barev, geometrie a analýzy.",
+                img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop",
                 tasks: [
-                    { q: "Jaký tvar má fotbalový míč?", img: "https://images.unsplash.com/photo-1614632537190-23e4146777db?w=500", options: ["Kruh / Koule", "Čtverec", "Trojúhelník"], correct: "Kruh / Koule" },
-                    { q: "Co nepatří mezi ovoce?", img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=500", options: ["Jablko", "Banán", "Mrkev"], correct: "Mrkev" },
-                    { q: "Jaká barva vznikne smícháním modré a žluté?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", options: ["Zelená", "Červená", "Fialová"], correct: "Zelená" },
-                    { q: "Který předmět je nejteplejší?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", options: ["Zmrzlina", "Slunce", "Kostka ledu"], correct: "Slunce" },
-                    { q: "Co má 3 vrcholy?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", options: ["Trojúhelník", "Kruh", "Obdélník"], correct: "Trojúhelník" },
-                    { q: "Co je těžší?", img: "https://images.unsplash.com/photo-1559348349-86f1f65817fe?w=500", options: ["Slon", "Mravenec", "Ptáček"], correct: "Slon" },
-                    { q: "Co následuje v řadě: Červená, Modrá, Červená, Modrá, ...?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", options: ["Červená", "Zelená", "Žlutá"], correct: "Červená" },
-                    { q: "Které zvíře je nejrychlejší?", img: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=500", options: ["Gepard", "Želva", "Hlemýžď"], correct: "Gepard" },
-                    { q: "Co létá ve vzduchu?", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=500", options: ["Letadlo", "Ryba", "Autobus"], correct: "Letadlo" },
-                    { q: "Kolik hodin má den a noc dohromady?", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=500", options: ["12", "24", "48"], correct: "24" }
+                    { q: "Jaký tvar má fotbalový míč?", img: "https://images.unsplash.com/photo-1614632537190-23e4146777db?w=500", correct: "Kruh", wrong: ["Čtverec", "Trojúhelník"] },
+                    { q: "Co nepatří mezi ovoce?", img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=500", correct: "Mrkev", wrong: ["Jablko", "Banán"] },
+                    { q: "Jaká barva vznikne smícháním modré a žluté?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", correct: "Zelená", wrong: ["Červená", "Fialová"] },
+                    { q: "Který předmět je nejteplejší?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", correct: "Slunce", wrong: ["Zmrzlina", "Led"] },
+                    { q: "Co má přesně 3 vrcholy?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "Trojúhelník", wrong: ["Kruh", "Obdélník"] },
+                    { q: "Co je těžší?", img: "https://images.unsplash.com/photo-1559348349-86f1f65817fe?w=500", correct: "Slon", wrong: ["Mravenec", "Ptáček"] },
+                    { q: "Co následuje v řadě: Červená, Modrá, Červená, Modrá, ...?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", correct: "Červená", wrong: ["Zelená", "Žlutá"] },
+                    { q: "Které zvíře je nejrychlejší?", img: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=500", correct: "Gepard", wrong: ["Želva", "Hlemýžď"] },
+                    { q: "Co létá ve vzduchu?", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=500", correct: "Letadlo", wrong: ["Ryba", "Autobus"] },
+                    { q: "Kolik hodin má celý den a noc dohromady?", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=500", correct: "24", wrong: ["12", "48"] },
+                    { q: "Jaký tvar má okno na domě nejčastěji?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "Čtverec", wrong: ["Kruh", "Trojúhelník"] },
+                    { q: "Co studí?", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=500", correct: "Led", wrong: ["Oheň", "Čaj"] },
+                    { q: "Který předmět do skupiny NEPATŘÍ: Židle, Stůl, Jablko, Skříň?", img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=500", correct: "Jablko", wrong: ["Židle", "Stůl"] },
+                    { q: "Jaká barva je trávy?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", correct: "Zelená", wrong: ["Modrá", "Červená"] },
+                    { q: "Co je delší?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "Pravítko 30 cm", wrong: ["Tužka 10 cm", "Guma 3 cm"] },
+                    { q: "Co je opakováním noci?", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=500", correct: "Den", wrong: ["Zima", "Rok"] },
+                    { q: "Která věc je měkká?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "Polštář", wrong: ["Kámen", "Sklo"] },
+                    { q: "Kolik stran má trojúhelník?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "3", wrong: ["4", "5"] },
+                    { q: "Které zvíře žije v lesích u nás?", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500", correct: "Srnec", wrong: ["Velbloud", "Klokan"] },
+                    { q: "Jaký tvar má plástev medu?", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500", correct: "Šestiúhelník", wrong: ["Kruh", "Čtverec"] }
                 ]
             },
             {
                 id: 4,
-                title: "4. Svět kolem nás",
-                desc: "Poznávejte přírodu, zvířátka, roční období a lidské tělo.",
-                img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&auto=format&fit=crop",
+                title: "4. Svět kolem nás a Příroda",
+                desc: "Zvířata, rostliny, roční období, planeta Země.",
+                img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&auto=format&fit=crop",
                 tasks: [
-                    { q: "Které roční období přichází po zimě?", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500", options: ["Jaro", "Léto", "Podzim"], correct: "Jaro" },
-                    { q: "Kde žije ryba?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", options: ["Ve vodě", "Na stromě", "V poušti"], correct: "Ve vodě" },
-                    { q: "Které zvíře dává mléko?", img: "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=500", options: ["Kráva", "Slepice", "Pes"], correct: "Kráva" },
-                    { q: "Co potřebují rostliny k růstu?", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500", options: ["Vodu a světlo", "Čokoládu", "Hračky"], correct: "Vodu a světlo" },
-                    { q: "Který orgán používáme k poslechu hudby?", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", options: ["Uši", "Oči", "Nos"], correct: "Uši" },
-                    { q: "Jaké zvíře má dlouhý chobot?", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500", options: ["Slon", "Žirafa", "Lev"], correct: "Slon" },
-                    { q: "Kdy vidíme na obloze hvězdy?", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=500", options: ["V noci", "Ráno", "Poledne"], correct: "V noci" },
-                    { q: "Co padá z nebe, když prší?", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=500", options: ["Voda", "Sníh", "Kameny"], correct: "Voda" },
-                    { q: "Kolik noh má pavouk?", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500", options: ["6", "8", "4"], correct: "8" },
-                    { q: "Který pták neumí létat?", img: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=500", options: ["Tučňák", "Vrabec", "Orel"], correct: "Tučňák" }
+                    { q: "Které roční období přichází po zimě?", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500", correct: "Jaro", wrong: ["Léto", "Podzim"] },
+                    { q: "Kde žije ryba?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Ve vodě", wrong: ["Na stromě", "V poušti"] },
+                    { q: "Které zvíře dává mléko?", img: "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=500", correct: "Kráva", wrong: ["Slepice", "Pes"] },
+                    { q: "Co potřebují rostliny k růstu?", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500", correct: "Vodu a světlo", wrong: ["Čokoládu", "Hračky"] },
+                    { q: "Který orgán používáme k poslechu hudby?", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", correct: "Uši", wrong: ["Oči", "Nos"] },
+                    { q: "Jaké zvíře má dlouhý chobot?", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500", correct: "Slon", wrong: ["Žirafa", "Lev"] },
+                    { q: "Kdy vidíme na obloze hvězdy?", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=500", correct: "V noci", wrong: ["Ráno", "V poledne"] },
+                    { q: "Co padá z nebe, když prší?", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=500", correct: "Voda", wrong: ["Sníh", "Kameny"] },
+                    { q: "Kolik noh má pavouk?", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500", correct: "8", wrong: ["6", "4"] },
+                    { q: "Který pták neumí létat?", img: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=500", correct: "Tučňák", wrong: ["Vrabec", "Orel"] },
+                    { q: "Co dělají stromy na podzim?", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500", correct: "Opadává jim listí", wrong: ["Kvetou", "Rostou v nich jablka"] },
+                    { q: "Které zvíře přes zimu spí?", img: "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=500", correct: "Medvěd", wrong: ["Pes", "Kočka"] },
+                    { q: "Čím dýchá člověk?", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", correct: "Plícemi", wrong: ["Srdcem", "Žaludkem"] },
+                    { q: "Která planeta je náš domov?", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500", correct: "Země", wrong: ["Mars", "Měsíc"] },
+                    { q: "Co dělají včely?", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500", correct: "Vyrábějí med", wrong: ["Dávají mléko", "Létají do vesmíru"] },
+                    { q: "Které zvíře žije v moři?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Velryba", wrong: ["Kolo", "Slepice"] },
+                    { q: "Jaké je nejteplejší roční období?", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500", correct: "Léto", wrong: ["Zima", "Podzim"] },
+                    { q: "Čím vidíme svět kolem nás?", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", correct: "Očima", wrong: ["Ušima", "Rukama"] },
+                    { q: "Kde staví ptáci hnízda?", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500", correct: "Na stromech", wrong: ["Pod vodou", "V podzemí"] },
+                    { q: "Co nosíme na hlavě v zimě?", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=500", correct: "Čepici", wrong: ["Plavky", "Brýle"] }
                 ]
             },
             {
                 id: 5,
                 title: "5. Angličtina pro nejmenší",
-                desc: "První anglická slovíčka: barvy, zvířátka a čísla zábavnou formou.",
-                img: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500&auto=format&fit=crop",
+                desc: "Zábavné seznámení s anglickými slovíčky, barvami a čísly.",
+                img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&auto=format&fit=crop",
                 tasks: [
-                    { q: "Jak se anglicky řekne 'Pes'?", img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500", options: ["Dog", "Cat", "Bird"], correct: "Dog" },
-                    { q: "Co znamená barva 'Red'?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", options: ["Červená", "Modrá", "Zelená"], correct: "Červená" },
-                    { q: "Jak řekneš anglicky číslo '1'?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", options: ["One", "Two", "Three"], correct: "One" },
-                    { q: "Co je to 'Apple'?", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500", options: ["Jablko", "Banán", "Pomeranč"], correct: "Jablko" },
-                    { q: "Jak se řekne 'Kočka'?", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500", options: ["Cat", "Dog", "Fish"], correct: "Cat" },
-                    { q: "Co znamená pozdrav 'Hello'?", img: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500", options: ["Ahoj", "Na shledanou", "Děkuji"], correct: "Ahoj" },
-                    { q: "Jaká barva je 'Blue'?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", options: ["Modrá", "Žlutá", "Černá"], correct: "Modrá" },
-                    { q: "Jak se anglicky řekne 'Slunce'?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", options: ["Sun", "Moon", "Star"], correct: "Sun" },
-                    { q: "Co znamená číslo 'Three'?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", options: ["3", "2", "5"], correct: "3" },
-                    { q: "Jak se řekne 'Děkuji'?", img: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500", options: ["Thank you", "Please", "Sorry"], correct: "Thank you" }
+                    { q: "Jak se anglicky řekne 'Pes'?", img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500", correct: "Dog", wrong: ["Cat", "Bird"] },
+                    { q: "Co znamená barva 'Red'?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", correct: "Červená", wrong: ["Modrá", "Zelená"] },
+                    { q: "Jak řekneš anglicky číslo '1'?", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500", correct: "One", wrong: ["Two", "Three"] },
+                    { q: "Co je to 'Apple'?", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500", correct: "Jablko", wrong: ["Banán", "Pomeranč"] },
+                    { q: "Jak se řekne 'Kočka'?", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500", correct: "Cat", wrong: ["Dog", "Fish"] },
+                    { q: "Co znamená pozdrav 'Hello'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", correct: "Ahoj", wrong: ["Na shledanou", "Děkuji"] },
+                    { q: "Jaká barva je 'Blue'?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", correct: "Modrá", wrong: ["Žlutá", "Černá"] },
+                    { q: "Jak se anglicky řekne 'Slunce'?", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", correct: "Sun", wrong: ["Moon", "Star"] },
+                    { q: "Co znamená číslo 'Three'?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "3", wrong: ["2", "5"] },
+                    { q: "Jak se řekne 'Děkuji'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", correct: "Thank you", wrong: ["Please", "Sorry"] },
+                    { q: "Co je to 'Water'?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Voda", wrong: ["Jídlo", "Oheň"] },
+                    { q: "Jak řekneš 'Green'?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", correct: "Zelená", wrong: ["Hnědá", "Bílá"] },
+                    { q: "Jak se anglicky řekne 'Kniha'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", correct: "Book", wrong: ["Pen", "Desk"] },
+                    { q: "Co je to 'House'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", correct: "Dům", wrong: ["Auto", "Škola"] },
+                    { q: "Jak se řekne 'Pták'?", img: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=500", correct: "Bird", wrong: ["Fish", "Bear"] },
+                    { q: "Co znamená 'Yellow'?", img: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=500", correct: "Žlutá", wrong: ["Fialová", "Šedá"] },
+                    { q: "Jak řekneš číslo 'Five'?", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500", correct: "5", wrong: ["4", "6"] },
+                    { q: "Co je to 'Car'?", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500", correct: "Auto", wrong: ["Kolo", "Vlak"] },
+                    { q: "Jak se anglicky řekne 'Mám rád'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", correct: "I like", wrong: ["I stop", "I run"] },
+                    { q: "Co znamená 'Goodbye'?", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500", correct: "Na shledanou", wrong: ["Dobrý den", "Prosím"] }
                 ]
             }
         ];
+
+        // Завантаження даних з localStorage або використання дефолтних
+        let courses = JSON.parse(localStorage.getItem('kidora_courses')) || defaultCourses;
+
+        function saveCourses() {
+            localStorage.setItem('kidora_courses', JSON.stringify(courses));
+        }
 
         let activeCourse = null;
         let activeTaskIndex = 0;
@@ -436,6 +514,7 @@
 
             if (viewId === 'catalog') renderCatalog();
             if (viewId === 'admin') renderAdmin();
+            if (viewId === 'dashboard') updateDashboard();
         }
 
         function renderCatalog() {
@@ -444,11 +523,11 @@
             courses.forEach(c => {
                 grid.innerHTML += `
                     <div class="card">
-                        <img src="c.img"class="card-img"alt="{c.title}">
+                        <img src="c.img"class="card-img"alt="{c.title}" onerror="this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500'">
                         <div class="card-body">
                             <h3>${c.title}</h3>
                             <p>${c.desc}</p>
-                            <button class="btn btn-primary" onclick="startCourse(${c.id})">Začít kurz (10 úkolů)</button>
+                            <button class="btn btn-primary" onclick="startCourse(c.id)">Začítkurz({c.tasks.length} úkolů)</button>
                         </div>
                     </div>
                 `;
@@ -457,39 +536,53 @@
 
         function startCourse(id) {
             activeCourse = courses.find(c => c.id === id);
+            if (!activeCourse || activeCourse.tasks.length === 0) {
+                alert('Tento kurz zatím nemá žádné otázky!');
+                return;
+            }
             activeTaskIndex = 0;
             switchView('lesson');
             loadTask();
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
         }
 
         function loadTask() {
             const task = activeCourse.tasks[activeTaskIndex];
             document.getElementById('task-progress').innerText = `Úkol ${activeTaskIndex + 1} z ${activeCourse.tasks.length}`;
             document.getElementById('lesson-title').innerText = activeCourse.title;
-            document.getElementById('task-image').src = task.img;
+            document.getElementById('task-image').src = task.img || 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500';
             document.getElementById('task-question').innerText = task.q;
             document.getElementById('result-msg').innerText = '';
             document.getElementById('next-btn').style.display = 'none';
 
+            // Формуємо масив варіантів та перемішуємо їх
+            const options = shuffle([task.correct, ...task.wrong]);
+
             const optsBox = document.getElementById('task-options');
             optsBox.innerHTML = '';
-            task.options.forEach(opt => {
-                optsBox.innerHTML += `<button class="option-btn" onclick="checkAnswer('opt')">{opt}</button>`;
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(opt, task.correct);
+                optsBox.appendChild(btn);
             });
         }
 
-        function checkAnswer(selectedOpt) {
-            const task = activeCourse.tasks[activeTaskIndex];
+        function checkAnswer(selectedOpt, correctOpt) {
             const msg = document.getElementById('result-msg');
             
-            if (selectedOpt === task.correct) {
+            if (selectedOpt === correctOpt) {
                 msg.style.color = 'var(--accent)';
                 msg.innerText = 'Správně! Skvělá práce 🎉';
                 document.getElementById('next-btn').style.display = 'inline-block';
                 totalCompletedTasks++;
                 document.getElementById('completed-count').innerText = totalCompletedTasks;
             } else {
-                msg.style.color = '#EF4444';
+                msg.style.color = 'var(--danger)';
                 msg.innerText = 'Chyba, zkuste to znovu!';
             }
         }
@@ -499,12 +592,24 @@
                 activeTaskIndex++;
                 loadTask();
             } else {
-                alert('Gratulujeme! Dokončili jste všech 10 úkolů tohoto kurzu! 🎉');
+                alert('Gratulujeme! Dokončili jste všechny úkoly tohoto kurzu! 🎉');
                 switchView('catalog');
             }
         }
 
+        function updateDashboard() {
+            document.getElementById('dash-courses-count').innerText = courses.length;
+            const totalTasks = courses.reduce((sum, c) => sum + c.tasks.length, 0);
+            document.getElementById('dash-tasks-count').innerText = totalTasks;
+        }
+
         function renderAdmin() {
+            const select = document.getElementById('admin-course-select');
+            select.innerHTML = '';
+            courses.forEach(c => {
+                select.innerHTML += `<option value="c.id">{c.title}</option>`;
+            });
+
             const grid = document.getElementById('admin-course-grid');
             grid.innerHTML = '';
             courses.forEach((c, index) => {
@@ -512,7 +617,8 @@
                     <div class="card" style="padding: 1rem;">
                         <h3>${c.title}</h3>
                         <p>${c.desc}</p>
-                        <button class="btn" style="background:#EF4444; color:white; margin-top:0.5rem;" onclick="deleteCourse(${index})">Smazat kurz</button>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">Počet otázek: ${c.tasks.length}</p>
+                        <button class="btn btn-danger" onclick="deleteCourse(${index})" style="font-size:0.85rem; padding: 0.5rem 1rem;">Smazat kurz</button>
                     </div>
                 `;
             });
@@ -523,34 +629,77 @@
             const desc = document.getElementById('new-desc').value;
             let img = document.getElementById('new-img').value;
 
-            if(!title || !desc) {
+            if (!title || !desc) {
                 alert('Vyplňte název a popis!');
                 return;
             }
-            if(!img) {
-                img = "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500";
-            }
+            if (!img) img = "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600";
 
             courses.push({
                 id: Date.now(),
                 title: title,
                 desc: desc,
                 img: img,
-                tasks: [
-                    { q: "Ukázkový úkol 1: Kolik je 1 + 1?", img: img, options: ["2", "3", "4"], correct: "2" }
-                ]
+                tasks: []
             });
 
+            saveCourses();
             document.getElementById('new-title').value = '';
             document.getElementById('new-desc').value = '';
             document.getElementById('new-img').value = '';
             renderAdmin();
-            alert('Nový kurz byl успешно přidán!');
+            alert('Nový kurz byl úspěšně přidán!');
+        }
+
+        function addQuestion() {
+            const courseId = parseInt(document.getElementById('admin-course-select').value);
+            const q = document.getElementById('q-text').value;
+            let img = document.getElementById('q-img').value;
+            const correct = document.getElementById('q-correct').value;
+            const wrong1 = document.getElementById('q-wrong1').value;
+            const wrong2 = document.getElementById('q-wrong2').value;
+
+            if (!q || !correct || !wrong1 || !wrong2) {
+                alert('Vyplňte otázku a všechny 3 odpovědi!');
+                return;
+            }
+            if (!img) img = "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500";
+
+            const course = courses.find(c => c.id === courseId);
+            if (course) {
+                course.tasks.push({
+                    q: q,
+                    img: img,
+                    correct: correct,
+                    wrong: [wrong1, wrong2]
+                });
+
+                saveCourses();
+                document.getElementById('q-text').value = '';
+                document.getElementById('q-img').value = '';
+                document.getElementById('q-correct').value = '';
+                document.getElementById('q-wrong1').value = '';
+                document.getElementById('q-wrong2').value = '';
+                renderAdmin();
+                alert('Otázka byla úspěšně přidána do kurzu!');
+            }
         }
 
         function deleteCourse(index) {
-            courses.splice(index, 1);
-            renderAdmin();
+            if (confirm('Opravdu chcete smazat tento kurz?')) {
+                courses.splice(index, 1);
+                saveCourses();
+                renderAdmin();
+            }
+        }
+
+        function resetData() {
+            if (confirm('Obnovit výchozí kurzy a otázky? Všechny vaše úpravy se vymažou.')) {
+                localStorage.removeItem('kidora_courses');
+                courses = JSON.parse(JSON.stringify(defaultCourses));
+                renderAdmin();
+                alert('Data byla obnovena!');
+            }
         }
 
         // Init
