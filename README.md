@@ -98,18 +98,5 @@ graph TD
 
 
 
-sequenceDiagram
-    actor User as Uživatel
-    participant UI as Web UI
-    participant Ctrl as CourseController
-    participant DB as Database
 
-    User->>UI: Klikne na "Začít kurz"
-    UI->>Ctrl: startCourse(userId, courseId)
-    Ctrl->>DB: verifyEnrollment()
-    DB-->>Ctrl: OK
-    Ctrl->>DB: createProgress()
-    DB-->>Ctrl: Progress Initialized
-    Ctrl-->>UI: Redirect to First Lesson
-    UI-->>User: Zobrazí 1. lekci
 
