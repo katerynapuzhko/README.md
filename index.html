@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidora – Online příprava dětí na školu</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --accent: #10B981;
+            --border: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        nav a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            background: white;
+            color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .btn:hover {
+            background: #F1F5F9;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Catalog Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        /* Forms & Inputs */
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+
+        /* Interactive Task */
+        .task-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .option-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .result-msg {
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="switchView('home')">Kidora</div>
+        <nav>
+            <a onclick="switchView('home')" id="nav-home" class="active">Domů</a>
+            <a onclick="switchView('catalog')" id="nav-catalog">Kurzy</a>
+            <a onclick="switchView('dashboard')" id="nav-dashboard">Můj pokrok</a>
+            <a onclick="switchView('admin')" id="nav-admin">Admin panel</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HOME VIEW -->
+        <div id="view-home" class="view active">
+            <div class="hero">
+                <h1>Online příprava dětí na školu</h1>
+                <p>Zábavná cesta k prvním školním úspěchům pro předškoláky.</p>
+                <button class="btn" onclick="switchView('catalog')">Prohlédnout kurzy</button>
+            </div>
+            <h2 style="margin-bottom: 1rem;">O platformě</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">
+                Platforma Kidora pomáhá dětem předškolního věku hravou formou zvládnout základy matematiky, čtení a logického myšlení. Sledujte pokrok svých dětí a užijte si společné učení.
+            </p>
+        </div>
+
+        <!-- CATALOG VIEW -->
+        <div id="view-catalog" class="view">
+            <h2 style="margin-bottom: 1.5rem;">Katalog kurzů</h2>
+            <div class="grid" id="course-grid">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+
+        <!-- LESSON / TASK VIEW -->
+        <div id="view-lesson" class="view">
+            <button class="btn" style="margin-bottom: 1rem;" onclick="switchView('catalog')">← Zpět na kurzy</button>
+            <div class="task-box">
+                <h2 id="lesson-title" style="margin-bottom: 1rem;">Lekce</h2>
+                <p id="lesson-desc" style="color: var(--text-muted); margin-bottom: 1.5rem;"></p>
+                <div id="task-content">
+                    <p><b>Úkol:</b> Kolik je 2 + 2?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkAnswer(3)">3</button>
+                        <button class="option-btn" onclick="checkAnswer(4)">4</button>
+                        <button class="option-btn" onclick="checkAnswer(5)">5</button>
+                    </div>
+                </div>
+                <div class="result-msg" id="result-msg"></div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="view">
+            <h2 style="margin-bottom: 1.5rem;">Uuživatelský panel & Pokrok</h2>
+            <div class="card" style="max-width: 400px;">
+                <h3>Uživatel: Rodič / Dítě</h3>
+                <p style="margin-top: 1rem;">Zapsané kurzy: <span id="enrolled-count">1</span></p>
+                <p>Dokončené lekce: <span id="completed-count">50%</span></p>
+            </div>
+        </div>
+
+        <!-- ADMIN VIEW -->
+        <div id="view-admin" class="view">
+            <h2 style="margin-bottom: 1.5rem;">Administrace kurzů (CRUD)</h2>
+            <div class="card" style="max-width: 600px; margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Přidat nový kurz</h3>
+                <input type="text" id="new-title" placeholder="Název kurzu">
+                <textarea id="new-desc" placeholder="Popis kurzu" rows="3"></textarea>
+                <button class="btn btn-primary" onclick="addCourse()">Uložit kurz</button>
+            </div>
+            <h3>Seznam kurzů v systému</h3>
+            <div class="grid" id="admin-course-grid" style="margin-top: 1rem;">
+                <!-- Admin dynamic list -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kidora. Všechna práva vyhrazena.</p>
+    </footer>
+
+    <script>
+        let courses = [
+            { id: 1, title: "Základy počítání", desc: "Naučte se čísla od 1 do 10 a jednoduché sčítání." },
+            { id: 2, title: "Hravá abeceda", desc: "Seznámení s písmeny a prvními slovy." },
+            { id: 3, title: "Logické hry pro předškoláky", desc: "Rozvoj logického myšlení a pozornosti." }
+        ];
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            const navEl = document.getElementById('nav-' + viewId);
+            if (navEl) navEl.classList.add('active');
+
+            if (viewId === 'catalog') renderCatalog();
+            if (viewId === 'admin') renderAdmin();
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('course-grid');
+            grid.innerHTML = '';
+            courses.forEach(c => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <h3>${c.title}</h3>
+                        <p>${c.desc}</p>
+                        <button class="btn btn-primary" onclick="startLesson(${c.id})">Začít kurz</button>
+                    </div>
+                `;
+            });
+        }
+
+        function startLesson(id) {
+            const course = courses.find(c => c.id === id);
+            document.getElementById('lesson-title').innerText = course.title;
+            document.getElementById('lesson-desc').innerText = course.desc;
+            document.getElementById('result-msg').innerText = '';
+            switchView('lesson');
+        }
+
+        function checkAnswer(ans) {
+            const msg = document.getElementById('result-msg');
+            if (ans === 4) {
+                msg.style.color = 'var(--accent)';
+                msg.innerText = 'Správně! Úkol byl úspěšně dokončen 🎉';
+            } else {
+                msg.style.color = '#EF4444';
+                msg.innerText = 'Chyba, zkuste to znovu.';
+            }
+        }
+
+        function renderAdmin() {
+            const grid = document.getElementById('admin-course-grid');
+            grid.innerHTML = '';
+            courses.forEach((c, index) => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <h3>${c.title}</h3>
+                        <p>${c.desc}</p>
+                        <button class="btn" style="background:#EF4444; color:white;" onclick="deleteCourse(${index})">Smazat</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addCourse() {
+            const title = document.getElementById('new-title').value;
+            const desc = document.getElementById('new-desc').value;
+            if(!title || !desc) {
+                alert('Vyplňte všechna pole!');
+                return;
+            }
+            courses.push({ id: Date.now(), title, desc });
+            document.getElementById('new-title').value = '';
+            document.getElementById('new-desc').value = '';
+            renderAdmin();
+            alert('Kurz úspěšně přidán!');
+        }
+
+        function deleteCourse(index) {
+            courses.splice(index, 1);
+            renderAdmin();
+        }
+
+        // Initial load
+        renderCatalog();
+    </script>
+</body>
+</html>
+
