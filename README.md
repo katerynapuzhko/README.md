@@ -94,7 +94,10 @@ graph TD
 
     Admin((Administrátor)) --> UC10[UC10: Správa kurzů]
     Admin --> UC11[UC11: Správa lekcí]
+### 2. Class Діаграма
+## Class Diagram
 
+mermaid
 classDiagram
     class User {
         +int id
@@ -128,6 +131,10 @@ classDiagram
     Course "1" *-- "*" Lesson : contains
     Lesson "1" *-- "*" Task : contains
     User "1" --> "*" Progress : tracks
+### 3. Sequence Діаграма (Заحájení kurzu)
+## Sequence Diagram: Zahájení kurzu
+
+mermaid
 sequenceDiagram
     actor User as Uživatel
     participant UI as Web UI
