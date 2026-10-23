@@ -78,9 +78,9 @@ Platforma **Kidora** je webová aplikace navržená pro online přípravu dětí
 * **UML Diagrams:** draw.io / diagrams.net
 * **Jazyk:** Python
 * **Verzovací systém:** Git + GitHub
-Markdown
 ## Use Case Diagram
 
+```mermaid
 graph TD
     User((Uživatel)) --> UC1[UC1: Registrace]
     User --> UC2[UC2: Přihlášení]
@@ -94,13 +94,6 @@ graph TD
 
     Admin((Administrátor)) --> UC10[UC10: Správa kurzů]
     Admin --> UC11[UC11: Správa lekcí]
-
----
-
-### 2. Class Діаграма
-markdown
-## Class Diagram
-
 classDiagram
     class User {
         +int id
@@ -134,14 +127,6 @@ classDiagram
     Course "1" *-- "*" Lesson : contains
     Lesson "1" *-- "*" Task : contains
     User "1" --> "*" Progress : tracks
-
----
-
-### 3. Sequence Діаграма (Заحájení kurzu)
-markdown
-## Sequence Diagram: Zahájení kurzu
-
-```mermaid
 sequenceDiagram
     actor User as Uživatel
     participant UI as Web UI
