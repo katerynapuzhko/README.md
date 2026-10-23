@@ -94,6 +94,7 @@ graph TD
 
     Admin((Administrátor)) --> UC10[UC10: Správa kurzů]
     Admin --> UC11[UC11: Správa lekcí]
+
 classDiagram
     class User {
         +int id
