@@ -99,35 +99,35 @@ graph TD
 classDiagram
     class User
     {
-        +int id
-        +String name
-        +String email
-        +login()
-        +register()
+        int id
+        String name
+        String email
+        login()
+        register()
     }
     class Course
     {
-        +int id
-        +String title
-        +String description
-        +getLessons()
+        int id
+        String title
+        String description
+        getLessons()
     }
     class Lesson
     {
-        +int id
-        +String title
-        +String content
+        int id
+        String title
+        String content
     }
     class Task
     {
-        +int id
-        +String question
-        +evaluate()
+        int id
+        String question
+        evaluate()
     }
     class Progress
     {
-        +int id
-        +int completedPercentage
+        int id
+        int completedPercentage
     }
   User --> Course : enrolled
     Course --> Lesson : contains
