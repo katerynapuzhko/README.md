@@ -95,30 +95,35 @@ graph TD
     Admin([Administrátor]) --> UC10[UC10: Správa kurzů]
     Admin --> UC11[UC11: Správa lekcí]
 classDiagram
-    class User {
+    class User
+    {
         +int id
         +String name
         +String email
         +login()
         +register()
     }
-    class Course {
+    class Course
+    {
         +int id
         +String title
         +String description
         +getLessons()
     }
-    class Lesson {
+    class Lesson
+    {
         +int id
         +String title
         +String content
     }
-    class Task {
+    class Task
+    {
         +int id
         +String question
         +evaluate()
     }
-    class Progress {
+    class Progress
+    {
         +int id
         +int completedPercentage
     }
