@@ -82,7 +82,7 @@ Platforma **Kidora** je webová aplikace navržená pro online přípravu dětí
 
 ```mermaid
 graph TD
-    User((Uživatel)) --> UC1[UC1: Registrace]
+    User([Uživatel]) --> UC1[UC1: Registrace]
     User --> UC2[UC2: Přihlášení]
     User --> UC3[UC3: Prohlížení kurzů]
     User --> UC4[UC4: Vyhledávání kurzů]
@@ -92,12 +92,8 @@ graph TD
     User --> UC8[UC8: Řešení úkolu]
     User --> UC9[UC9: Sledování pokroku]
 
-    Admin((Administrátor)) --> UC10[UC10: Správa kurzů]
+    Admin([Administrátor]) --> UC10[UC10: Správa kurzů]
     Admin --> UC11[UC11: Správa lekcí]
-### 2. Class Діаграма
-## Class Diagram
-
-mermaid
 classDiagram
     class User {
         +int id
@@ -126,15 +122,13 @@ classDiagram
         +int id
         +int completedPercentage
     }
+  User --> Course : enrolled
+    Course --> Lesson : contains
+    Lesson --> Task : contains
+    User --> Progress : tracks
 
-    User "1" --> "*" Course : enrolled
-    Course "1" *-- "*" Lesson : contains
-    Lesson "1" *-- "*" Task : contains
-    User "1" --> "*" Progress : tracks
-### 3. Sequence Діаграма (Заحájení kurzu)
-## Sequence Diagram: Zahájení kurzu
 
-mermaid
+
 sequenceDiagram
     actor User as Uživatel
     participant UI as Web UI
@@ -146,6 +140,7 @@ sequenceDiagram
     Ctrl->>DB: verifyEnrollment()
     DB-->>Ctrl: OK
     Ctrl->>DB: createProgress()
-    DB-->>Ctrl: Progress Initialized (0%)
+    DB-->>Ctrl: Progress Initialized
     Ctrl-->>UI: Redirect to First Lesson
     UI-->>User: Zobrazí 1. lekci
+
