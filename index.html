@@ -45,7 +45,7 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: var(--primary);
             cursor: pointer;
@@ -59,7 +59,7 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            padding: 0.5rem 0.8rem;
+            padding: 0.5rem 0.9rem;
             border-radius: 0.4rem;
             transition: all 0.2s;
         }
@@ -95,26 +95,27 @@
         }
 
         .hero h1 {
-            font-size: 2.2rem;
+            font-size: 2.3rem;
             margin-bottom: 0.8rem;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             margin-bottom: 1.5rem;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         .btn {
             background: white;
             color: var(--primary);
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 1.6rem;
             border: none;
             border-radius: 0.5rem;
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
+            transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .btn:hover {
@@ -129,10 +130,16 @@
 
         .btn-primary:hover {
             background: var(--primary-hover);
+            color: white;
         }
 
         .btn-danger {
             background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
             color: white;
         }
 
@@ -187,16 +194,18 @@
             border-radius: 0.5rem;
             outline: none;
             font-size: 1rem;
+            background: #FFFFFF;
         }
 
         .task-box {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 0.75rem;
+            padding: 2.5rem;
+            border-radius: 1rem;
             max-width: 650px;
             margin: 0 auto;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .task-img {
@@ -217,7 +226,7 @@
         }
 
         .option-btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.85rem 1.8rem;
             border: 2px solid var(--border);
             background: white;
             border-radius: 0.5rem;
@@ -225,16 +234,18 @@
             font-weight: bold;
             font-size: 1.05rem;
             transition: all 0.2s;
-            min-width: 130px;
+            min-width: 140px;
+            color: var(--text-main);
         }
 
         .option-btn:hover {
             border-color: var(--primary);
             background: #EEF2FF;
+            color: var(--primary);
         }
 
         .result-msg {
-            margin-top: 1rem;
+            margin-top: 1.2rem;
             font-weight: bold;
             font-size: 1.2rem;
             min-height: 1.8rem;
@@ -260,12 +271,12 @@
 <body>
 
     <header>
-        <div class="logo" onclick="switchView('home')">Kidora</div>
+        <div class="logo" onclick="window.switchView('home')">Kidora</div>
         <nav>
-            <button onclick="switchView('home')" id="nav-home" class="active">Domů</button>
-            <button onclick="switchView('catalog')" id="nav-catalog">Kurzy</button>
-            <button onclick="switchView('dashboard')" id="nav-dashboard">Můj pokrok</button>
-            <button onclick="switchView('admin')" id="nav-admin">Admin panel</button>
+            <button onclick="window.switchView('home')" id="nav-home" class="active">Domů</button>
+            <button onclick="window.switchView('catalog')" id="nav-catalog">Kurzy</button>
+            <button onclick="window.switchView('dashboard')" id="nav-dashboard">Můj pokrok</button>
+            <button onclick="window.switchView('admin')" id="nav-admin">Admin panel</button>
         </nav>
     </header>
 
@@ -275,7 +286,7 @@
             <div class="hero">
                 <h1>Online příprava dětí na školu</h1>
                 <p>Zábavná interaktivní výuka pro předškoláky s 5 kurzy a 100 úkoly.</p>
-                <button class="btn" onclick="switchView('catalog')">Prohlédnout katalog kurzů</button>
+                <button class="btn" onclick="window.switchView('catalog')">Prohlédnout katalog kurzů</button>
             </div>
             <h2 style="margin-bottom: 1.0rem;">O platformě Kidora</h2>
             <p style="color: var(--text-muted); line-height: 1.6;">
@@ -291,7 +302,7 @@
 
         <!-- LESSON / TASK VIEW -->
         <div id="view-lesson" class="view">
-            <button class="btn" style="margin-bottom: 1rem;" onclick="switchView('catalog')">← Zpět na katalog kurzů</button>
+            <button class="btn" style="margin-bottom: 1rem;" onclick="window.switchView('catalog')">← Zpět na katalog kurzů</button>
             <div class="task-box">
                 <div class="progress-text" id="task-progress">Úkol 1 z 20</div>
                 <h2 id="lesson-title" style="margin-bottom: 0.5rem;">Název kurzu</h2>
@@ -300,7 +311,7 @@
                 
                 <div class="options" id="task-options"></div>
                 <div class="result-msg" id="result-msg"></div>
-                <button class="btn btn-primary" id="next-btn" style="display:none; margin: 1.5rem auto 0 auto;" onclick="nextTask()">Další úkol →</button>
+                <button class="btn btn-primary" id="next-btn" style="display:none; margin: 1.5rem auto 0 auto;" onclick="window.nextTask()">Další otázka →</button>
             </div>
         </div>
 
@@ -325,8 +336,8 @@
                     <h3 style="margin-bottom: 1rem;">1. Vytvořit nový kurz</h3>
                     <input type="text" id="new-title" placeholder="Název nového kurzu">
                     <textarea id="new-desc" placeholder="Krátký popis kurzu" rows="2"></textarea>
-                    <input type="text" id="new-img" placeholder="URL adresa obrázku kurzu (volitelné)">
-                    <button class="btn btn-primary" onclick="addCourse()">Uložit nový kurz</button>
+                    <input type="text" id="new-img" placeholder="URL adresa obrázku kurzu">
+                    <button class="btn btn-primary" onclick="window.addCourse()">Uložit nový kurz</button>
                 </div>
 
                 <!-- Add Question -->
@@ -334,17 +345,17 @@
                     <h3 style="margin-bottom: 1rem;">2. Přidat úkol do kurzu</h3>
                     <select id="admin-course-select"></select>
                     <input type="text" id="q-text" placeholder="Znění otázky / úkolu">
-                    <input type="text" id="q-img" placeholder="URL obrázku k úkolu (volitelné)">
+                    <input type="text" id="q-img" placeholder="URL obrázku k úkolu">
                     <input type="text" id="q-correct" placeholder="Správná odpověď">
                     <input type="text" id="q-wrong1" placeholder="Špatná odpověď 1">
                     <input type="text" id="q-wrong2" placeholder="Špatná odpověď 2">
-                    <button class="btn btn-primary" onclick="addQuestion()">Přidat úkol do kurzu</button>
+                    <button class="btn btn-primary" onclick="window.addQuestion()">Přidat úkol do kurzu</button>
                 </div>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h3>Seznam kurzů a jejich správa</h3>
-                <button class="btn btn-danger" onclick="resetData()" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Obnovit původní data</button>
+                <button class="btn btn-danger" onclick="window.resetData()" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Obnovit původní data</button>
             </div>
             <div class="grid" id="admin-course-grid"></div>
         </div>
@@ -447,7 +458,7 @@
                 img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&auto=format&fit=crop",
                 tasks: [
                     { q: "Které roční období přichází po zimě?", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=500", correct: "Jaro", wrong: ["Léto", "Podzim"] },
-                    { q: "Kde žije ryba?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Ve vodě", wrong: ["Na stromě", "V pouští"] },
+                    { q: "Kde žije ryba?", img: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=500", correct: "Ve vodě", wrong: ["Na stromě", "V poušti"] },
                     { q: "Které zvíře dává mléko?", img: "https://images.unsplash.com/photo-1546445317-29f4545f9d52?w=500", correct: "Kráva", wrong: ["Slepice", "Pes"] },
                     { q: "Co potřebují rostliny k růstu?", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500", correct: "Vodu a světlo", wrong: ["Čokoládu", "Hračky"] },
                     { q: "Který orgán používáme k poslechu hudby?", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", correct: "Uši", wrong: ["Oči", "Nos"] },
@@ -531,7 +542,7 @@
                         <div class="card-body">
                             <h3>${c.title}</h3>
                             <p>${c.desc}</p>
-                            <button class="btn btn-primary" onclick="startCourse(c.id)">Začítkurz({c.tasks.length} úkolů)</button>
+                            <button class="btn btn-primary" onclick="window.startCourse(c.id)">Začítkurz({c.tasks.length} úkolů)</button>
                         </div>
                     </div>
                 `;
@@ -558,7 +569,7 @@
             document.getElementById('result-msg').innerText = '';
             document.getElementById('next-btn').style.display = 'none';
 
-            // Mix options
+            // Mix options securely
             const options = [task.correct, ...task.wrong].sort(() => Math.random() - 0.5);
 
             const optsBox = document.getElementById('task-options');
@@ -567,7 +578,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = function() { checkAnswer(opt, task.correct); };
+                btn.onclick = function() { window.checkAnswer(opt, task.correct); };
                 optsBox.appendChild(btn);
             });
         }
@@ -618,7 +629,7 @@
                         <h3>${c.title}</h3>
                         <p>${c.desc}</p>
                         <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">Počet otázek: ${c.tasks.length}</p>
-                        <button class="btn btn-danger" onclick="deleteCourse(${index})" style="font-size:0.85rem; padding: 0.5rem 1rem;">Smazat kurz</button>
+                        <button class="btn btn-danger" onclick="window.deleteCourse(${index})" style="font-size:0.85rem; padding: 0.5rem 1rem;">Smazat kurz</button>
                     </div>
                 `;
             });
@@ -681,7 +692,7 @@
                 document.getElementById('q-wrong1').value = '';
                 document.getElementById('q-wrong2').value = '';
                 renderAdmin();
-                alert('Otázka byla úspěšně přidána do kurzu!');
+                alert('Úkol byl úspěšně přidán do kurzu!');
             }
         }
 
@@ -701,6 +712,19 @@
                 alert('Data byla obnovena!');
             }
         }
+
+        // Expose functions globally to window object to prevent any scope bugs
+        window.switchView = switchView;
+        window.startCourse = startCourse;
+        window.loadTask = loadTask;
+        window.checkAnswer = checkAnswer;
+        window.nextTask = nextTask;
+        window.updateDashboard = updateDashboard;
+        window.renderAdmin = renderAdmin;
+        window.addCourse = addCourse;
+        window.addQuestion = addQuestion;
+        window.deleteCourse = deleteCourse;
+        window.resetData = resetData;
 
         // Init
         renderCatalog();
