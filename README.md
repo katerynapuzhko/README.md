@@ -78,3 +78,81 @@ Platforma **Kidora** je webová aplikace navržená pro online přípravu dětí
 * **UML Diagrams:** draw.io / diagrams.net
 * **Jazyk:** Python
 * **Verzovací systém:** Git + GitHub
+Markdown
+## Use Case Diagram
+
+graph TD
+    User((Uživatel)) --> UC1[UC1: Registrace]
+    User --> UC2[UC2: Přihlášení]
+    User --> UC3[UC3: Prohlížení kurzů]
+    User --> UC4[UC4: Vyhledávání kurzů]
+    User --> UC5[UC5: Detail kurzu]
+    User --> UC6[UC6: Zahájení kurzu]
+    User --> UC7[UC7: Procházení lekce]
+    User --> UC8[UC8: Řešení úkolu]
+    User --> UC9[UC9: Sledování pokroku]
+
+    Admin((Administrátor)) --> UC10[UC10: Správa kurzů]
+    Admin --> UC11[UC11: Správa lekcí]
+
+---
+
+### 2. Class Діаграма
+markdown
+## Class Diagram
+
+classDiagram
+    class User {
+        +int id
+        +String name
+        +String email
+        +login()
+        +register()
+    }
+    class Course {
+        +int id
+        +String title
+        +String description
+        +getLessons()
+    }
+    class Lesson {
+        +int id
+        +String title
+        +String content
+    }
+    class Task {
+        +int id
+        +String question
+        +evaluate()
+    }
+    class Progress {
+        +int id
+        +int completedPercentage
+    }
+
+    User "1" --> "*" Course : enrolled
+    Course "1" *-- "*" Lesson : contains
+    Lesson "1" *-- "*" Task : contains
+    User "1" --> "*" Progress : tracks
+
+---
+
+### 3. Sequence Діаграма (Заحájení kurzu)
+markdown
+## Sequence Diagram: Zahájení kurzu
+
+```mermaid
+sequenceDiagram
+    actor User as Uživatel
+    participant UI as Web UI
+    participant Ctrl as CourseController
+    participant DB as Database
+
+    User->>UI: Klikne na "Začít kurz"
+    UI->>Ctrl: startCourse(userId, courseId)
+    Ctrl->>DB: verifyEnrollment()
+    DB-->>Ctrl: OK
+    Ctrl->>DB: createProgress()
+    DB-->>Ctrl: Progress Initialized (0%)
+    Ctrl-->>UI: Redirect to First Lesson
+    UI-->>User: Zobrazí 1. lekci
