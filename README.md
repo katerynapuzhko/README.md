@@ -96,44 +96,6 @@ graph TD
     Admin --> UC11[UC11: Správa lekcí]
 
 
-classDiagram
-    class User
-    {
-        id
-        name
-        email
-        login()
-        register()
-    }
-    class Course
-    {
-        id
-        title
-        description
-        getLessons()
-    }
-    class Lesson
-    {
-        id
-        title
-        content
-    }
-    class Task
-    {
-        id
-        question
-        evaluate()
-    }
-    class Progress
-    {
-        id
-        completedPercentage
-    }
-  User --> Course : enrolled
-    Course --> Lesson : contains
-    Lesson --> Task : contains
-    User --> Progress : tracks
-
 
 
 sequenceDiagram
